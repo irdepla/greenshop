@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.container {
+    min-width: 375px;
+}
+
+
+:root {
+    --main-color: #46A358; 
+    --text-color: #3D3D3D; 
+    --accent-color: #f59e0b; 
+    --error-color: #ef4444; 
+  }
