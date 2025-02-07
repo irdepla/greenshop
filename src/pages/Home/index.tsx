@@ -19,17 +19,17 @@ const Home = () => {
     // }, [])
 
 
-    const mutation = useMutation({
-        mutationFn
-    });
+    // const mutation = useMutation({
+    //     mutationFn
+    // });
 
 
 
-    console.log("mutation is " , mutation);
+    // console.log("mutation is " , mutation);
 
-    useEffect(() => {
-        mutation.mutate()
-    }, [])
+    // useEffect(() => {
+    //     mutation.mutate()
+    // }, [])
 
     return (
         <>
