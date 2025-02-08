@@ -8,7 +8,7 @@ const MainButton = ({ text, icon, className }: MainButtonProps) => {
     return (
       <button className={`flex gap-1 rounded-md py-[7px] px-[17px] items-center bg-main font-medium text-white ${className}`}>
         {icon && (
-          <span>
+          <span className="">
             <img src={icon} alt="button icon" />
           </span>
         )}
