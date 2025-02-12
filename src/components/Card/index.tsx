@@ -3,6 +3,7 @@ import SearchLogo from "../../assets/icons/search-logo.svg";
 import CartLogo from "../../assets/icons/cart-logo.svg";
 import HeartLogo from "../../assets/icons/heart-logo.svg";
 import { useState } from "react";
+import { NavLink } from "react-router";
 
 interface CardProps {
   product: ProductData;
@@ -12,6 +13,7 @@ const Card = ({ product }: CardProps) => {
   const [isHovered, setisHovered] = useState(false);
 
   return (
+    <NavLink to={`/product-details/${product._id}`}  >
     <div
       onMouseEnter={() => setisHovered(true)}
       onMouseLeave={() => setisHovered(false)}
@@ -36,6 +38,7 @@ const Card = ({ product }: CardProps) => {
       <p className="font-normal text-base text-text__color">{product.name}</p>
       <span className="text-main font-bold text-lg">${product.price}</span>
     </div>
+    </NavLink>
   );
 };
 

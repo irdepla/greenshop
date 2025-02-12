@@ -15,7 +15,7 @@ export default {
       colors: {
         main: 'var(--main-color)',
         text__color: 'var(--text-color)',
-        accent: 'var(--accent-color)',
+        secondary__text__color: 'var(--secondary-color)',
         error: 'var(--error-color)',
       },
     },
