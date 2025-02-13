@@ -1,16 +1,23 @@
 import { ProductData } from "../../interfaces/ProductsInteface";
 import SearchLogo from "../../assets/icons/search-logo.svg";
 import CartLogo from "../../assets/icons/cart-logo.svg";
+import { useDispatch } from "react-redux";
 import HeartLogo from "../../assets/icons/heart-logo.svg";
 import { useState } from "react";
 import { NavLink } from "react-router";
-
+import { addToCart } from "../../store/productSlice";
+ 
 interface CardProps {
   product: ProductData;
 }
 
 const Card = ({ product }: CardProps) => {
-  const [isHovered, setisHovered] = useState(false);
+  const [isHovered, setisHovered] = useState(false)
+  const dispatch = useDispatch()
+  function handleAddToCart(product: ProductData){
+    console.log("Adding product to cart:", product);
+    dispatch(addToCart(product))
+  }
 
   return (
     <NavLink to={`/product-details/${product._id}`}  >
@@ -30,7 +37,15 @@ const Card = ({ product }: CardProps) => {
           isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
         }`}
       >
+        <button onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+          console.log("bosildi");
+          e.preventDefault()
+          e.stopPropagation() 
+          handleAddToCart(product)
+          console.log("qo'shildi");
+        }}>
         <img className="w-6 h-6" src={CartLogo} alt="cart logo" />
+        </button>
         <img className="w-6 h-6" src={HeartLogo} alt="heart logo" />
         <img className="w-6 h-6" src={SearchLogo} alt="search logo" />
       </div>

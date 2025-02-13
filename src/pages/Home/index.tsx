@@ -3,8 +3,8 @@ import {
   getProducts,
 } from "../../service/products.service";
 import {  useQuery } from "@tanstack/react-query";
-import { toast, ToastContainer } from "react-toastify";
-import { ProductData } from "../../interfaces/ProductsInteface";
+import { ToastContainer } from "react-toastify";
+import { ProductData, ProductFilters } from "../../interfaces/ProductsInteface";
 import Card from "../../components/Card";
 import SalesImg from "../../assets/images/sales-img.svg";
 import FeaturesFlowerImg1 from "../../assets/images/features-img1.svg";
@@ -19,15 +19,30 @@ import { NavLink, useSearchParams } from "react-router";
 
 const Home = () => {
 
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  // const [searchParams, setSearchParams] = useSearchParams()
+  const filters : ProductFilters = {
+    category: searchParams.get("category") || undefined, 
+    size: searchParams.get("size") || undefined
+};
 
-  
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["product"],
-    queryFn: () => getProducts(),
+    queryKey: ["product", filters],
+    queryFn: () => getProducts(filters),
   });
+
+  const handleCategoryChange = (category: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("category", category);
+    setSearchParams(newParams);
+};
+
+const handleSizeChange = (size: string) => {
+  const newParams = new URLSearchParams(searchParams);
+  newParams.set("size", size);
+  setSearchParams(newParams);
+};
 
   console.log("my data", data);
 
@@ -38,7 +53,7 @@ const Home = () => {
     <>
       <ToastContainer />
       <main>
-        <section className="hero">
+      <section className="hero">
           <div className="container">
             <Swiper />
           </div>
@@ -50,55 +65,74 @@ const Home = () => {
                 <span className="text-text__color font-bold text-lg">
                   Categories
                 </span>
-                <li className="ml-2">
+                <li style={{
+                  }} onClick={() => {
+                  handleCategoryChange("House Plants")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">House Plants</p>
                     <p>(33)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => { 
+                  handleCategoryChange("Potter Plants")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Potter Plants</p>
                     <p>(12)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Seeds")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Seeds</p>
                     <p>(65)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Small Plants")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Small Plants</p>
                     <p>(39)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Big Plants")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Big Plants</p>
                     <p>(23)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Succulents")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Succulents</p>
                     <p>(17)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Trerrariums")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Trerrariums</p>
                     <p>(19)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Gardening")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Gardening</p>
                     <p>(13)</p>
                   </span>
                 </li>
-                <li className="ml-2">
+                <li onClick={() => {
+                  handleCategoryChange("Accessories")
+                }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Accessories</p>
                     <p>(18)</p>
@@ -109,19 +143,25 @@ const Home = () => {
               <div className="size__filters">
                 <h3 className="text-text__color font-bold text-lg">Size</h3>
                 <ul className="ml-2 flex flex-col gap-5">
-                  <li>
+                  <li onClick={() => {
+                    handleSizeChange("S")
+                  }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Small</p>
                       <p>(119)</p>
                     </span>
                   </li>
-                  <li>
+                  <li onClick={() => {
+                    handleSizeChange("M")
+                  }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Medium</p>
                       <p>(86)</p>
                     </span>
                   </li>
-                  <li>
+                  <li onClick={() => {
+                    handleSizeChange("L")
+                  }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Large</p>
                       <p>(78)</p>

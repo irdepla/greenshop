@@ -16,3 +16,8 @@ export interface ProductResponse {
   products: ProductData[],
   count: number,
 }
+
+export interface ProductFilters {
+  category?: string;
+  size?: string;
+}
