@@ -4,7 +4,7 @@ import {
 } from "../../service/products.service";
 import {  useQuery } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
-import { ProductData, ProductFilters } from "../../interfaces/ProductsInteface";
+import { ProductData } from "../../interfaces/ProductsInteface";
 import Card from "../../components/Card";
 import SalesImg from "../../assets/images/sales-img.svg";
 import FeaturesFlowerImg1 from "../../assets/images/features-img1.svg";
@@ -16,38 +16,50 @@ import PostImg2 from "../../assets/images/post2.svg";
 import PostImg3 from "../../assets/images/post3.svg";
 import PostImg4 from "../../assets/images/post4.svg";
 import { NavLink, useSearchParams } from "react-router";
+import Pagination from "../../components/Pagination";
+import { useEffect, useState } from "react";
 
 const Home = () => {
 
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const filters : ProductFilters = {
-    category: searchParams.get("category") || undefined, 
-    size: searchParams.get("size") || undefined
-};
+  const [searchParams, setSearchParams] = useSearchParams() 
+  const [page, setPage] = useState<number>(1)
 
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["product", filters],
-    queryFn: () => getProducts(filters),
+//   const filters : ProductFilters = {
+//     category: searchParams.get("category") || undefined, 
+//     size: searchParams.get("size") || undefined
+// };
+
+
+  const query = useQuery({
+    queryKey: ["product", setSearchParams.toString()],
+    queryFn: () => getProducts(setSearchParams, page),
   });
 
-  const handleCategoryChange = (category: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("category", category);
-    setSearchParams(newParams);
-};
+  useEffect(() =>{
+    query.refetch()
+  }, [searchParams])
 
-const handleSizeChange = (size: string) => {
-  const newParams = new URLSearchParams(searchParams);
-  newParams.set("size", size);
-  setSearchParams(newParams);
-};
+  const changeParams = (key: string, value: string) => {
+    searchParams.set(key, value)
+    setSearchParams(searchParams)
+  }
 
-  console.log("my data", data);
+//   const handleCategoryChange = (category: string) => {
+//     const newParams = new URLSearchParams(searchParams);
+//     newParams.set("category", category);
+//     setSearchParams(newParams);
+// };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching products</p>;
+// const handleSizeChange = (size: string) => {
+//   const newParams = new URLSearchParams(searchParams);
+//   newParams.set("size", size);
+//   setSearchParams(newParams);
+// };
+
+
+  if (query.isLoading) return <p>Loading...</p>;
+  if (query.isError) return <p>Error fetching products</p>;
 
   return (
     <>
@@ -67,7 +79,7 @@ const handleSizeChange = (size: string) => {
                 </span>
                 <li style={{
                   }} onClick={() => {
-                  handleCategoryChange("House Plants")
+                    changeParams("Category", "House Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">House Plants</p>
@@ -75,7 +87,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => { 
-                  handleCategoryChange("Potter Plants")
+                  changeParams("Category", "Potter Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Potter Plants</p>
@@ -83,7 +95,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Seeds")
+                  changeParams("Category", "Seeds")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Seeds</p>
@@ -91,7 +103,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Small Plants")
+                  changeParams("Category", "Small Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Small Plants</p>
@@ -99,7 +111,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Big Plants")
+                  changeParams("Big", "House Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Big Plants</p>
@@ -107,7 +119,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Succulents")
+                  changeParams("Category", "Succulents")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Succulents</p>
@@ -115,7 +127,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Trerrariums")
+                  changeParams("Category", "Trerrariums")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Trerrariums</p>
@@ -123,7 +135,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Gardening")
+                  changeParams("Category", "Gardening")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Gardening</p>
@@ -131,7 +143,7 @@ const handleSizeChange = (size: string) => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  handleCategoryChange("Accessories")
+                  changeParams("Category", "Accessories")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Accessories</p>
@@ -144,7 +156,7 @@ const handleSizeChange = (size: string) => {
                 <h3 className="text-text__color font-bold text-lg">Size</h3>
                 <ul className="ml-2 flex flex-col gap-5">
                   <li onClick={() => {
-                    handleSizeChange("S")
+                    changeParams("Size", "S")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Small</p>
@@ -152,7 +164,7 @@ const handleSizeChange = (size: string) => {
                     </span>
                   </li>
                   <li onClick={() => {
-                    handleSizeChange("M")
+                    changeParams("Size", "M")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Medium</p>
@@ -160,7 +172,7 @@ const handleSizeChange = (size: string) => {
                     </span>
                   </li>
                   <li onClick={() => {
-                    handleSizeChange("L")
+                    changeParams("Size", "L")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Large</p>
@@ -211,10 +223,13 @@ const handleSizeChange = (size: string) => {
               </div>
               <span className="border-main mt-[31px] border-solid border w-[258px] h-[1px] block m-auto text-center "></span>
               <div className="grid grid-cols-3 gap-[41px] items-center  ">
-                {data?.map((products: ProductData) => (
+                {query.data?.map((products: ProductData) => (
                   <Card key={products._id} product={products} />
                 ))}
               </div>
+
+              <Pagination />
+
             </div>
           </div>
         </section>

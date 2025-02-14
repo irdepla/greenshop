@@ -1,20 +1,21 @@
 
 import { apiClient } from "../config/api.config";
-import { ProductData, ProductFilters } from "../interfaces/ProductsInteface";
+import { ProductData } from "../interfaces/ProductsInteface";
 
 
 
 
-export async function getProducts(filters: ProductFilters)  {
+export async function getProducts(searchParams: URLSearchParams, page: number)  {
     const {data} = await apiClient.get("/products",
         {
             params: {
-                page: 1,
-                limit: 9,
-                ...filters
+               ...Object.fromEntries(searchParams),
+               page,
+               limit: 9
             }
         }
     )
+    console.log(data?.products);
     return data?.products
 }
 
