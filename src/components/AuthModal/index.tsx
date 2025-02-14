@@ -20,14 +20,17 @@ const style = {
 
 export default function AuthModal() {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    console.log("Modal Opened");
+    setOpen(true)
+  };
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-      <MainButton icon={LoginIcon} text={"Login"} />
-      </Button>
+      {/* <Button onClick={handleOpen}> */}
+      <MainButton onClick={handleOpen} icon={LoginIcon} text={"Login"} />
+      {/* </Button> */}
       <Modal
         open={open}
         onClose={handleClose}

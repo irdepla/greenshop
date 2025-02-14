@@ -48,9 +48,11 @@ const Navbar = () => {
                     <button>
                         <img src={SearchLogo} alt="search logo" />
                     </button>
+                    <NavLink to="/cart">
                     <button>
                         <img src={CartLogo} alt="cart logo" />
                     </button>
+                    </NavLink>
                     <AuthModal />
                 </div>
             </div>

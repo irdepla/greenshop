@@ -2,11 +2,14 @@ interface MainButtonProps {
     text?: string;
     icon?: string;
     className?: string;
+    onClick?: () => void;
   }
 
-const MainButton = ({ text, icon, className }: MainButtonProps) => {
+const MainButton = ({ text, icon, className, onClick }: MainButtonProps) => {
     return (
-      <button className={`flex gap-1 rounded-md py-[7px] px-[17px] items-center bg-main font-medium text-white ${className}`}>
+      <button 
+      onClick={onClick}
+      className={`flex gap-1 rounded-md py-[7px] px-[17px] items-center bg-main font-medium text-white ${className}`}>
         {icon && (
           <span className="">
             <img src={icon} alt="button icon" />

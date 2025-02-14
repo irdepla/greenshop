@@ -21,3 +21,5 @@ export interface ProductFilters {
   category?: string;
   size?: string;
 }
+
+
