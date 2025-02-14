@@ -1,10 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { data, useParams } from "react-router";
 import { getProductById, getProducts } from "../../service/products.service";
 import { ProductData } from "../../interfaces/ProductsInteface";
 import MainButton from "../../components/MainButton";
 import HeartIcon from "../../assets/icons/green-heart-icon.svg"
 import { styled } from "@mui/material";
+import ModalButton from "../../components/ModalButton";
+import { createReview } from "../../service/review.service";
 
 const ProductDetails = () => {
 
@@ -18,6 +20,9 @@ const ProductDetails = () => {
         queryFn: () => getProductById(id as string ),
     })
     
+
+
+
     if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching products</p>;
     
@@ -91,6 +96,7 @@ const ProductDetails = () => {
                     <span className="active:border-b active:border-main text-main font-bold text-[17px]">Product Description</span>
                     <span className="ml-[30px] text-text__color">Reviews (19)</span>
                 </div>
+                <ModalButton buttonText="Add review" />
                 <div className="mt-[18px] text-secondary__text__color">
                     <p>{product?.description}</p>
                 </div>

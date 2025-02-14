@@ -1,13 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import MainButton from "../MainButton";
+import { Mutation, useMutation } from "@tanstack/react-query";
+import { createReview } from "../../service/review.service";
+import { toast, ToastContainer } from "react-toastify";
+import { apiClient } from "../../config/api.config";
+import { useParams } from "react-router";
 
 interface ModalButtonProps {
   buttonText?: string;
   className?: string;
 }
 
-const ModalButton: React.FC<ModalButtonProps> = ({ buttonText,className }) => {
+const ModalButton: React.FC<ModalButtonProps> = ({ buttonText, className }) => {
   const [open, setOpen] = useState(false);
+  const { id } = useParams<{ id: string }>();
+
+  const name = useRef<any>(null);
+  const stars = useRef<any>(null);
+  const comment = useRef<any>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -18,31 +28,78 @@ const ModalButton: React.FC<ModalButtonProps> = ({ buttonText,className }) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  //   const mutation = useMutation({
+  //     mutationFn: createReview,
+  //     onSuccess: () => {
+  //         toast.success("Omadli qo'shildi")
+  //     }
+  // })
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    console.log("target is", e.currentTarget);
+    const formData = {
+      reviewerName: name.current.value,
+      stars: parseInt(stars.current.value),
+      comment: comment.current.value,
+      productId: id,
+    };
+    console.log("id__", id, formData);
+
+    try {
+      const res = await apiClient.post(`/reviews`, formData);
+      toast.success("The review has been successfully created.");
+      setOpen(false);
+    } catch (error: any) {
+      toast.error(error.res?.data?.message || "Xatolik yuz berdi");
+    }
+    console.log("----", e.target);
+  }
+
   return (
-    <div className="relative">
-      <MainButton className={className} text={buttonText} onClick={() => setOpen(true)} />
+    <>
+      <ToastContainer />
+      <div className="relative">
+        <MainButton
+          className={className}
+          text={buttonText}
+          onClick={() => setOpen(true)}
+        />
 
-      {open && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={() => setOpen(false)}
-        >
+        {open && (
           <div
-            className="bg-white p-6 rounded-lg shadow-lg relative"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={() => setOpen(false)}
           >
-            <h2 className="text-xl font-bold mb-4">Modal Title</h2>
-            <p>This is a reusable modal.</p>
+            <div
+              className="bg-white p-6 rounded-lg shadow-lg relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <form
+                onSubmit={onSubmit}
+                className="flex flex-col gap-4"
+                action=""
+              >
+                <input ref={name} type="text" placeholder="Enter your name" />
+                <input ref={stars} type="number" placeholder="Enter rating" />
+                <input
+                  ref={comment}
+                  type="text"
+                  placeholder="Type your comment here..."
+                />
+                <button type="submit">Submit</button>
+              </form>
 
-            <MainButton
-              text="Close"
-              onClick={() => setOpen(false)}
-              className="mt-4 bg-red-500"
-            />
+              <MainButton
+                text="Close"
+                onClick={() => setOpen(false)}
+                className="mt-4 bg-red-500"
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

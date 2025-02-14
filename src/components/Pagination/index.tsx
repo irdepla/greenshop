@@ -1,4 +1,4 @@
-const Pagination = () => {
+const Pagination = ({changePageNum} : any) => {
   return (
     <>
       <div className="flex justify-center mt-10 space-x-2">
@@ -9,12 +9,21 @@ const Pagination = () => {
           1
         </a>
         <a
+        onClick={() => {
+            changePageNum(2)
+            console.log("ishladi")
+        }}
           href="#"
           className="hover:bg-gray-100 px-2 py-1 sm:px-4 sm:py-2 ml-1 mt-2 text-gray-600 border rounded-lg focus:outline-none"
         >
           2
         </a>
         <a
+        onClick={() => {
+            changePageNum(3)
+            console.log("bosildi");
+            
+        }}
           href="#"
           className="hover:bg-gray-100 px-2 py-1 sm:px-4 sm:py-2 ml-1 mt-2 text-gray-600 border rounded-lg focus:outline-none"
         >

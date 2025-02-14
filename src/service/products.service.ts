@@ -6,6 +6,7 @@ import { ProductData } from "../interfaces/ProductsInteface";
 
 
 export async function getProducts(searchParams: URLSearchParams, page: number)  {
+
     const {data} = await apiClient.get("/products",
         {
             params: {

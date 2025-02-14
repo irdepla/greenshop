@@ -8,7 +8,7 @@ const CartProduct = ({cartProduct} : {cartProduct: CartItem}) => {
     const dispatch = useDispatch()
     return (
         <>
-        <div className="flex justify-between items-center gap-8 mt-[11px]" key={cartProduct.product._id}>
+        <div className="flex justify-between items-center mt-[11px]" key={cartProduct.product._id}>
             {
                 cartProduct.product.pictures.map((image) =>(
                     <img className='w-[70px] h-[70px] object-cover ' src={image} alt="" />
@@ -49,13 +49,13 @@ const CartProduct = ({cartProduct} : {cartProduct: CartItem}) => {
             </p>
 
             <button
-              className=""
+              className="mr-7"
               onClick={() => {
                 console.log("o'chirildi");
                 dispatch(removeFromCart(cartProduct.product._id));
               }}
             >
-                <img src={DeleteButton} alt="delete icon" />
+                <img className='w-6 h-6' src={DeleteButton} alt="delete icon" />
             </button>
           </div>
         </>

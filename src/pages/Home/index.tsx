@@ -23,39 +23,34 @@ const Home = () => {
 
   const [searchParams, setSearchParams] = useSearchParams() 
   const [page, setPage] = useState<number>(1)
-
-
-//   const filters : ProductFilters = {
-//     category: searchParams.get("category") || undefined, 
-//     size: searchParams.get("size") || undefined
-// };
+  const [countProducts, setCountProducts] = useState(0)
 
 
   const query = useQuery({
-    queryKey: ["product", setSearchParams.toString()],
-    queryFn: () => getProducts(setSearchParams, page),
+    queryKey: ["product", searchParams.toString()],
+    queryFn: () => getProducts(searchParams, page),
   });
 
   useEffect(() =>{
     query.refetch()
   }, [searchParams])
 
+  useEffect(() => {
+    searchParams.set("limit", "9")
+    searchParams.set("page", "1")
+  }, [])
+
+  function changePageNum(page: number){
+    console.log("page number is", page);
+    
+    searchParams.set("page", "" + page)
+    setSearchParams(searchParams)
+  }
+
   const changeParams = (key: string, value: string) => {
     searchParams.set(key, value)
     setSearchParams(searchParams)
   }
-
-//   const handleCategoryChange = (category: string) => {
-//     const newParams = new URLSearchParams(searchParams);
-//     newParams.set("category", category);
-//     setSearchParams(newParams);
-// };
-
-// const handleSizeChange = (size: string) => {
-//   const newParams = new URLSearchParams(searchParams);
-//   newParams.set("size", size);
-//   setSearchParams(newParams);
-// };
 
 
   if (query.isLoading) return <p>Loading...</p>;
@@ -79,7 +74,7 @@ const Home = () => {
                 </span>
                 <li style={{
                   }} onClick={() => {
-                    changeParams("Category", "House Plants")
+                    changeParams("category", "House Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">House Plants</p>
@@ -87,7 +82,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => { 
-                  changeParams("Category", "Potter Plants")
+                  changeParams("category", "Potter Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Potter Plants</p>
@@ -95,7 +90,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Seeds")
+                  changeParams("category", "Seeds")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Seeds</p>
@@ -103,7 +98,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Small Plants")
+                  changeParams("category", "Small Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Small Plants</p>
@@ -111,7 +106,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Big", "House Plants")
+                  changeParams("category", "Big Plants")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Big Plants</p>
@@ -119,7 +114,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Succulents")
+                  changeParams("category", "Succulents")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Succulents</p>
@@ -127,7 +122,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Trerrariums")
+                  changeParams("category", "Trerrariums")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Trerrariums</p>
@@ -135,7 +130,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Gardening")
+                  changeParams("category", "Gardening")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Gardening</p>
@@ -143,7 +138,7 @@ const Home = () => {
                   </span>
                 </li>
                 <li onClick={() => {
-                  changeParams("Category", "Accessories")
+                  changeParams("category", "Accessories")
                 }} className="ml-2">
                   <span className="flex justify-between items-center ">
                     <p className="text-text__color">Accessories</p>
@@ -156,7 +151,7 @@ const Home = () => {
                 <h3 className="text-text__color font-bold text-lg">Size</h3>
                 <ul className="ml-2 flex flex-col gap-5">
                   <li onClick={() => {
-                    changeParams("Size", "S")
+                    changeParams("size", "S")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Small</p>
@@ -164,7 +159,7 @@ const Home = () => {
                     </span>
                   </li>
                   <li onClick={() => {
-                    changeParams("Size", "M")
+                    changeParams("size", "M")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Medium</p>
@@ -172,7 +167,7 @@ const Home = () => {
                     </span>
                   </li>
                   <li onClick={() => {
-                    changeParams("Size", "L")
+                    changeParams("size", "L")
                   }}>
                     <span className="flex justify-between items-center ">
                       <p className="text-text__color">Large</p>
@@ -228,7 +223,7 @@ const Home = () => {
                 ))}
               </div>
 
-              <Pagination />
+              <Pagination changePageNum={changePageNum} />
 
             </div>
           </div>
