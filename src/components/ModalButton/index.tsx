@@ -19,15 +19,6 @@ const ModalButton: React.FC<ModalButtonProps> = ({ buttonText, className }) => {
   const stars = useRef<any>(null);
   const comment = useRef<any>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   //   const mutation = useMutation({
   //     mutationFn: createReview,
   //     onSuccess: () => {
@@ -51,7 +42,8 @@ const ModalButton: React.FC<ModalButtonProps> = ({ buttonText, className }) => {
       toast.success("The review has been successfully created.");
       setOpen(false);
     } catch (error: any) {
-      toast.error(error.res?.data?.message || "Xatolik yuz berdi");
+      console.log("error is ", error?.response?.data?.error);
+      toast.error(error?.response?.data?.error.map((err: any) => err).join(",") || "Xatolik yuz berdi");
     }
     console.log("----", e.target);
   }
