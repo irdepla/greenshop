@@ -3,9 +3,10 @@ import { decreaseQuantity, increaseQuantity, removeFromCart } from '../../store/
 import { CartItem } from '../../interfaces/CartInterface';
 import MainButton from '../MainButton'
 import DeleteButton from "../../assets/icons/delete-icon.svg"
+import ModalButton from '../ModalButton';
 
 const CartProduct = ({cartProduct} : {cartProduct: CartItem}) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch()    
     return (
         <>
         <div className="flex justify-between items-center mt-[11px]" key={cartProduct.product._id}>
@@ -48,15 +49,17 @@ const CartProduct = ({cartProduct} : {cartProduct: CartItem}) => {
                 ${ (cartProduct.product.price * cartProduct.quantity).toFixed(2) }
             </p>
 
-            <button
-              className="mr-7"
-              onClick={() => {
+            <ModalButton icon={DeleteButton} className="bg-transparent"  >
+            <p>Are you sure you want to delete this product?</p>
+            <div className="flex gap-1">
+              <button onClick={() => {
                 console.log("o'chirildi");
                 dispatch(removeFromCart(cartProduct.product._id));
-              }}
-            >
-                <img className='w-6 h-6' src={DeleteButton} alt="delete icon" />
-            </button>
+              }} className="border border-main">Yes</button>
+              <button
+              className="border border-red-800">No</button>
+            </div>
+          </ModalButton>
           </div>
         </>
     );

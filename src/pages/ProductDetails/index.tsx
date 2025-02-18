@@ -1,12 +1,13 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { data, useParams } from "react-router";
-import { getProductById, getProducts } from "../../service/products.service";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router";
+import { getProductById } from "../../service/products.service";
 import { ProductData } from "../../interfaces/ProductsInteface";
 import MainButton from "../../components/MainButton";
 import HeartIcon from "../../assets/icons/green-heart-icon.svg"
-import { styled } from "@mui/material";
 import ModalButton from "../../components/ModalButton";
-import { createReview } from "../../service/review.service";
+import { useRef } from "react";
+import { apiClient } from "../../config/api.config";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
 
@@ -19,8 +20,28 @@ const ProductDetails = () => {
         queryKey: ['product', id],
         queryFn: () => getProductById(id as string ),
     })
-    
 
+    async function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        const formData = {
+          reviewerName: name.current.value,
+          stars: parseInt(stars.current.value),
+          comment: comment.current.value,
+          productId: id,
+        };
+    
+        try {
+          await apiClient.post(`/reviews`, formData);
+          toast.success("Review added successfully!");
+        } catch (error: any) {
+          toast.error(error?.response?.data?.error?.join(",") || "Error occurred");
+        }
+      }
+
+
+    const name = useRef<any>(null);
+  const stars = useRef<any>(null);
+  const comment = useRef<any>(null)
 
 
     if (isLoading) return <p>Loading...</p>;
@@ -96,7 +117,15 @@ const ProductDetails = () => {
                     <span className="active:border-b active:border-main text-main font-bold text-[17px]">Product Description</span>
                     <span className="ml-[30px] text-text__color">Reviews (19)</span>
                 </div>
-                <ModalButton buttonText="Add review" />
+                <ModalButton onSubmit={onSubmit} buttonText="Add review" >
+                <input ref={name} type="text" placeholder="Enter your name" />
+                <input ref={stars} type="number" placeholder="Enter rating" />
+                <input
+                  ref={comment}
+                  type="text"
+                  placeholder="Type your comment here..."
+                />
+                </ModalButton>
                 <div className="mt-[18px] text-secondary__text__color">
                     <p>{product?.description}</p>
                 </div>

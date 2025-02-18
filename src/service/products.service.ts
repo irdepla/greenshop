@@ -5,13 +5,12 @@ import { ProductData } from "../interfaces/ProductsInteface";
 
 
 
-export async function getProducts(searchParams: URLSearchParams, page: number)  {
+export async function getProducts(searchParams: URLSearchParams)  {
 
     const {data} = await apiClient.get("/products",
         {
             params: {
                ...Object.fromEntries(searchParams),
-               page,
                limit: 9
             }
         }

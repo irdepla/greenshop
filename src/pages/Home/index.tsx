@@ -24,7 +24,7 @@ const Home = () => {
 
   const query = useQuery({
     queryKey: ["product", searchParams.toString()],
-    queryFn: () => getProducts(searchParams, page),
+    queryFn: () => getProducts(searchParams),
   });
 
 

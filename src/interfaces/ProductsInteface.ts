@@ -17,9 +17,3 @@ export interface ProductResponse {
   count: number,
 }
 
-interface ProductFilters {
-  category?: string;
-  size?: string;
-}
-
-
